@@ -20,6 +20,10 @@ rvm:
 env:
   - CPK_LOGFILE=log/test.log
 
+services:
+  - mysql
+  - postgresql
+
 addons:
-  - postgresql: '12'
-  - mariadb: "10.5"
+  postgresql: '13'
+
