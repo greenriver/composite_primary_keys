@@ -9,7 +9,7 @@ module CompositePrimaryKeys
           if primary_key
             # break apart CPKs
             return primary_key.map do |key|
-              arel_attribute(key).desc
+              table[key].desc
             end
           else
             raise IrreversibleOrderError,

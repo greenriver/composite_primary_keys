@@ -31,7 +31,7 @@ module CompositePrimaryKeys
         # )
 
         columns = @klass.primary_keys.map do |key|
-          connection.visitor.compile(arel_attribute(key))
+          connection.visitor.compile(table[key])
         end
         values = @klass.connection.columns_for_distinct(columns, relation.order_values)
 
@@ -225,7 +225,7 @@ module CompositePrimaryKeys
         if order_values.empty? && (implicit_order_column || primary_key)
           # CPK
           # order(arel_attribute(implicit_order_column || primary_key).asc)
-          order(Array(implicit_order_column || primary_key).map {|key| arel_attribute(key).asc})
+          order(Array(implicit_order_column || primary_key).map {|key| table[key].asc})
         else
           self
         end

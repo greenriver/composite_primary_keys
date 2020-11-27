@@ -30,7 +30,7 @@ module ActiveRecord
         stmt.table(table)
 
         arel_attributes = primary_keys.map do |key|
-          arel_attribute(key)
+          table[key]
         end.to_composite_keys
 
         subselect = subquery_for(arel_attributes, arel)
@@ -38,7 +38,7 @@ module ActiveRecord
         stmt.wheres = [arel_attributes.in(subselect)]
       else
         stmt.table(arel.join_sources.empty? ? table : arel.source)
-        stmt.key = arel_attribute(primary_key)
+        stmt.key = table[primary_key]
         stmt.wheres = arel.constraints
       end
       stmt.take(arel.limit)
@@ -49,7 +49,7 @@ module ActiveRecord
         if klass.locking_enabled? &&
             !updates.key?(klass.locking_column) &&
             !updates.key?(klass.locking_column.to_sym)
-          attr = arel_attribute(klass.locking_column)
+          attr = table[klass.locking_column]
           updates[attr.name] = _increment_attribute(attr)
         end
         stmt.set _substitute_values(updates)
@@ -80,7 +80,7 @@ module ActiveRecord
         stmt.from(table)
 
         arel_attributes = primary_keys.map do |key|
-          arel_attribute(key)
+          table[key]
         end.to_composite_keys
 
         subselect = subquery_for(arel_attributes, arel)
@@ -88,7 +88,7 @@ module ActiveRecord
         stmt.wheres = [arel_attributes.in(subselect)]
       else
         stmt.from(arel.join_sources.empty? ? table : arel.source)
-        stmt.key = arel_attribute(primary_key)
+        stmt.key = table[primary_key]
         stmt.wheres = arel.constraints
       end
       stmt.take(arel.limit)
