@@ -9,7 +9,7 @@ module CompositePrimaryKeys
             @klass.table[column]
           end
         elsif @klass.has_attribute?(column_name) || @klass.attribute_alias?(column_name)
-          @klass.table[column_name]
+          @klass.arel_table[column_name]
         else
           Arel.sql(column_name == :all ? "*" : column_name.to_s)
         end
