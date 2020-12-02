@@ -6,7 +6,7 @@ module CompositePrimaryKeys
         if column_name.kind_of?(Array)
           # Note: Test don't seem to run this code?
           column_name.map do |column|
-            @klass.table[column]
+            @klass.arel_table[column]
           end
         elsif @klass.has_attribute?(column_name) || @klass.attribute_alias?(column_name)
           @klass.arel_table[column_name]
