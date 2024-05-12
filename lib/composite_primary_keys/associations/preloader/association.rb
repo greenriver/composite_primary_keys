@@ -6,6 +6,9 @@ module ActiveRecord
         class LoaderQuery
           def load_records_for_keys(keys, &block)
             # CPK
+            # Don't load the entire data set
+            return scope.none.load(&block) unless keys.present?
+
             if association_key_name.is_a?(Array)
               predicate = cpk_in_predicate(scope.klass.arel_table, association_key_name, keys)
               scope.where(predicate).load(&block)
